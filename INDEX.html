@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GameVault — Catálogo</title>
+<style>
+:root{
+  --bg:#08080c;
+  --surface:#111116;
+  --surface2:#18181f;
+  --border:#242430;
+  --accent:#e63946;
+  --accent2:#ff6b6b;
+  --text:#f0f0f8;
+  --muted:#6b6b85;
+  --gold:#f4a261;
+}
+*{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+
+/* NAVBAR */
+nav{position:fixed;top:0;width:100%;z-index:200;background:rgba(8,8,12,0.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--accent);letter-spacing:2px}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--accent);color:#fff;border:none;padding:0.45rem 1.2rem;border-radius:6px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s}
+.nav-cta:hover{opacity:.85}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem 4rem;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(230,57,70,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(230,57,70,0.05) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(230,57,70,0.15) 0%,transparent 70%);pointer-events:none}
+.hero-tag{display:inline-block;background:rgba(230,57,70,0.12);border:1px solid rgba(230,57,70,0.3);color:var(--accent2);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding:0.35rem 1rem;border-radius:999px;margin-bottom:1.5rem}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,10vw,8rem);line-height:1;letter-spacing:4px;margin-bottom:1rem}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);font-size:1.05rem;max-width:480px;margin-bottom:2.5rem;line-height:1.7}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.btn-primary{background:var(--accent);color:#fff;padding:0.75rem 2rem;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.btn-primary:hover{background:var(--accent2)}
+.btn-outline{background:transparent;color:var(--text);padding:0.75rem 2rem;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;border:1px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.hero-stats{display:flex;gap:3rem;margin-top:3.5rem;flex-wrap:wrap;justify-content:center}
+.stat{text-align:center}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--text);line-height:1}
+.stat-label{font-size:0.75rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px}
+
+/* SECTIONS */
+.sec-wrap{padding:5rem 2.5rem;max-width:1200px;margin:0 auto}
+.sec-label{font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);letter-spacing:2px;margin-bottom:0.5rem}
+.sec-sub{color:var(--muted);font-size:0.92rem;margin-bottom:2.5rem}
+
+/* FEATURED */
+.featured-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:700px){.featured-grid,.footer-inner{grid-template-columns:1fr!important}}
+.feat-card{position:relative;border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:transform .2s,border-color .2s}
+.feat-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.feat-card.big{grid-row:span 2}
+.feat-thumb{width:100%;height:100%;min-height:220px;display:flex;align-items:center;justify-content:center;font-size:64px}
+.feat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,12,0.95) 0%,rgba(8,8,12,0.3) 60%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem}
+.feat-genre{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem}
+.feat-name{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:1px;margin-bottom:0.4rem}
+.feat-desc{font-size:0.8rem;color:var(--muted);line-height:1.5;margin-bottom:0.75rem}
+.feat-row{display:flex;align-items:center;gap:0.75rem}
+.feat-price{font-weight:700;font-size:1rem}
+.feat-stars{font-size:0.8rem;color:var(--gold)}
+
+/* FILTERS */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:2rem}
+.pill{font-size:0.8rem;padding:6px 16px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.pill.active,.pill:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* CATALOG GRID */
+.catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 8px 32px rgba(230,57,70,0.12)}
+.thumb{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:44px;position:relative}
+.new-badge{position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:1px}
+.sale-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#1a0a00;font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:4px}
+.info{padding:12px 14px}
+.game-name{font-weight:600;font-size:0.9rem;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.game-genre{font-size:0.72rem;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.card-row{display:flex;align-items:center;justify-content:space-between}
+.game-price{font-weight:700;font-size:0.95rem}
+.game-stars{font-size:0.75rem;color:var(--gold)}
+.empty{grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)}
+
+/* OFFERS BANNER */
+.offers-banner{background:linear-gradient(135deg,rgba(230,57,70,0.12),rgba(230,57,70,0.04));border:1px solid rgba(230,57,70,0.25);border-radius:16px;padding:2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;margin:0 2.5rem}
+.offer-text h2{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:2px}
+.offer-text p{color:var(--muted);font-size:0.88rem;margin-top:4px}
+.offer-tag{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--accent);line-height:1}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;max-width:480px;width:100%;overflow:hidden;animation:popIn .25s ease}
+@keyframes popIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:none}}
+.modal-thumb{width:100%;height:180px;display:flex;align-items:center;justify-content:center;font-size:72px}
+.modal-body{padding:1.5rem}
+.modal-genre{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem}
+.modal-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:1px;margin-bottom:0.5rem}
+.modal-desc{color:var(--muted);font-size:0.88rem;line-height:1.7;margin-bottom:1.25rem}
+.modal-meta{display:flex;gap:1.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.meta-item label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px}
+.meta-item span{font-weight:600;font-size:0.95rem}
+.modal-actions{display:flex;gap:0.75rem}
+.modal-buy{flex:1;background:var(--accent);color:#fff;border:none;padding:0.75rem;border-radius:8px;font-weight:700;font-size:0.95rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s}
+.modal-buy:hover{opacity:.85}
+.modal-close{background:var(--surface2);color:var(--muted);border:1px solid var(--border);padding:0.75rem 1.2rem;border-radius:8px;cursor:pointer;font-size:0.9rem;font-family:'DM Sans',sans-serif;transition:all .2s}
+.modal-close:hover{color:var(--text);border-color:var(--muted)}
+
+/* FOOTER */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem 2.5rem;margin-top:4rem}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem}
+.footer-brand .nav-logo{display:block;margin-bottom:0.75rem}
+.footer-brand p{color:var(--muted);font-size:0.82rem;max-width:240px;line-height:1.6}
+.footer-col h4{font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.footer-col a{display:block;color:var(--muted);text-decoration:none;font-size:0.85rem;margin-bottom:0.5rem;transition:color .2s}
+.footer-col a:hover{color:var(--text)}
+.footer-bottom{max-width:1200px;margin:2rem auto 0;border-top:1px solid var(--border);padding-top:1.5rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-bottom p{color:var(--muted);font-size:0.78rem}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <span class="nav-logo">GameVault</span>
+  <div class="nav-links">
+    <a href="#destacados">Destacados</a>
+    <a href="#ofertas">Ofertas</a>
+    <a href="#catalogo">Catálogo</a>
+  </div>
+  <button class="nav-cta">Registrarse</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <span class="hero-tag">⚡ Nueva temporada 2025</span>
+  <h1>Tu tienda<br><span>de juegos</span></h1>
+  <p>Descubre los mejores títulos del año. Acción, RPG, Indie y mucho más con los mejores precios.</p>
+  <div class="hero-btns">
+    <a href="#catalogo" class="btn-primary">Ver catálogo</a>
+    <a href="#ofertas" class="btn-outline">Ofertas del día</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Juegos</div></div>
+    <div class="stat"><div class="stat-num">50K</div><div class="stat-label">Usuarios</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Valoración</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Soporte</div></div>
+  </div>
+</div>
+
+<!-- DESTACADOS -->
+<div class="sec-wrap" id="destacados">
+  <p class="sec-label">// Selección del editor</p>
+  <h2 class="sec-title">Juegos destacados</h2>
+  <p class="sec-sub">Los títulos más valorados de esta semana</p>
+  <div class="featured-grid">
+    <div class="feat-card big" onclick="openModal(0)" style="min-height:420px">
+      <div class="feat-thumb" style="background:#1a1a2e;min-height:420px">⚔️</div>
+      <div class="feat-overlay">
+        <div class="feat-genre">RPG</div>
+        <div class="feat-name">Elden Ring</div>
+        <div class="feat-desc">Un vasto mundo abierto lleno de peligros, magia y secretos por descubrir.</div>
+        <div class="feat-row"><span class="feat-price">$59.99</span><span class="feat-stars">★★★★★ 4.9</span></div>
+      </div>
+    </div>
+    <div class="feat-card" onclick="openModal(2)">
+      <div class="feat-thumb" style="background:#1a0a2e;min-height:195px">🕷️</div>
+      <div class="feat-overlay">
+        <div class="feat-genre">Acción</div>
+        <div class="feat-name">Spider-Man 2</div>
+        <div class="feat-row"><span class="feat-price">$69.99</span><span class="feat-stars">★★★★☆ 4.6</span></div>
+      </div>
+    </div>
+    <div class="feat-card" onclick="openModal(6)">
+      <div class="feat-thumb" style="background:#0d1020;min-height:195px">🎲</div>
+      <div class="feat-overlay">
+        <div class="feat-genre">RPG</div>
+        <div class="feat-name">Baldur's Gate 3</div>
+        <div class="feat-row"><span class="feat-price">$59.99</span><span class="feat-stars">★★★★★ 5.0</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OFFERS BANNER -->
+<div class="offers-banner" id="ofertas">
+  <div class="offer-text">
+    <h2>🔥 Ofertas de temporada</h2>
+    <p>Juegos seleccionados con hasta 60% de descuento. ¡Solo por tiempo limitado!</p>
+  </div>
+  <div class="offer-tag">-60%</div>
+</div>
+
+<!-- CATÁLOGO -->
+<div class="sec-wrap" id="catalogo">
+  <p class="sec-label">// Explorar</p>
+  <h2 class="sec-title">Catálogo completo</h2>
+  <p class="sec-sub">Filtra por género y encuentra tu próximo juego favorito</p>
+  <div class="filter-bar">
+    <button class="pill active" onclick="filter(this,'all')">Todos</button>
+    <button class="pill" onclick="filter(this,'Acción')">Acción</button>
+    <button class="pill" onclick="filter(this,'RPG')">RPG</button>
+    <button class="pill" onclick="filter(this,'Indie')">Indie</button>
+    <button class="pill" onclick="filter(this,'Deportes')">Deportes</button>
+    <button class="pill" onclick="filter(this,'Terror')">Terror</button>
+    <button class="pill" onclick="filter(this,'Aventura')">Aventura</button>
+  </div>
+  <div class="catalog-grid" id="grid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-thumb" id="m-thumb"></div>
+    <div class="modal-body">
+      <div class="modal-genre" id="m-genre"></div>
+      <div class="modal-name" id="m-name"></div>
+      <div class="modal-desc" id="m-desc"></div>
+      <div class="modal-meta">
+        <div class="meta-item"><label>Precio</label><span id="m-price"></span></div>
+        <div class="meta-item"><label>Valoración</label><span id="m-stars"></span></div>
+        <div class="meta-item"><label>Jugadores</label><span id="m-players"></span></div>
+        <div class="meta-item"><label>Plataforma</label><span id="m-plat"></span></div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-buy">🛒 Comprar ahora</button>
+        <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="nav-logo">GameVault</span>
+      <p>Tu destino para los mejores videojuegos. Calidad, precio y atención sin igual desde 2025.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explorar</h4>
+      <a href="#">Novedades</a>
+      <a href="#">Más vendidos</a>
+      <a href="#">Ofertas</a>
+      <a href="#">Próximamente</a>
+    </div>
+    <div class="footer-col">
+      <h4>Géneros</h4>
+      <a href="#">Acción</a>
+      <a href="#">RPG</a>
+      <a href="#">Indie</a>
+      <a href="#">Deportes</a>
+    </div>
+    <div class="footer-col">
+      <h4>Soporte</h4>
+      <a href="#">Centro de ayuda</a>
+      <a href="#">Devoluciones</a>
+      <a href="#">Contacto</a>
+      <a href="#">Términos</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 GameVault. Todos los derechos reservados.</p>
+    <p>Hecho con ❤️ para gamers</p>
+  </div>
+</footer>
+
+<script>
+const games=[
+  {name:"Elden Ring",genre:"RPG",price:"$59.99",stars:"★★★★★ 4.9",bg:"#1a1a2e",emoji:"⚔️",badge:"",desc:"Un vasto mundo abierto lleno de peligros, magia y criaturas épicas. Forja tu propio destino.",players:"1 jugador",plat:"PC / PS5 / Xbox"},
+  {name:"Hollow Knight",genre:"Indie",price:"$14.99",stars:"★★★★★ 4.8",bg:"#0d1b2a",emoji:"🦋",badge:"sale",desc:"Un metroidvania oscuro y hermoso ambientado en un reino de insectos olvidado bajo la tierra.",players:"1 jugador",plat:"PC / Switch / PS4"},
+  {name:"Spider-Man 2",genre:"Acción",price:"$69.99",stars:"★★★★☆ 4.6",bg:"#1a0a2e",emoji:"🕷️",badge:"new",desc:"Balancéate por Nueva York como Peter Parker y Miles Morales en esta épica aventura de superhéroes.",players:"1 jugador",plat:"PS5"},
+  {name:"FIFA 25",genre:"Deportes",price:"$49.99",stars:"★★★☆☆ 3.5",bg:"#0a1a0d",emoji:"⚽",badge:"",desc:"El simulador de fútbol más completo con licencias oficiales de todas las ligas del mundo.",players:"1-4 jugadores",plat:"PC / PS5 / Xbox"},
+  {name:"Celeste",genre:"Indie",price:"$19.99",stars:"★★★★★ 4.9",bg:"#1a0d1a",emoji:"🏔️",badge:"sale",desc:"Ayuda a Madeline a escalar la Montaña Celeste en este plataformas de precisión con historia emotiva.",players:"1 jugador",plat:"PC / Switch / PS4"},
+  {name:"God of War",genre:"Acción",price:"$39.99",stars:"★★★★★ 4.8",bg:"#1a1010",emoji:"🪓",badge:"sale",desc:"Kratos y Atreus emprenden un viaje épico por los reinos nórdicos enfrentando dioses y monstruos.",players:"1 jugador",plat:"PC / PS5"},
+  {name:"Baldur's Gate 3",genre:"RPG",price:"$59.99",stars:"★★★★★ 5.0",bg:"#0d1020",emoji:"🎲",badge:"new",desc:"El RPG por turnos definitivo. Crea tu personaje y vive una aventura única con cada decisión.",players:"1-4 jugadores",plat:"PC / PS5 / Xbox"},
+  {name:"NBA 2K25",genre:"Deportes",price:"$59.99",stars:"★★★☆☆ 3.4",bg:"#101a0a",emoji:"🏀",badge:"",desc:"El baloncesto más realista con nuevos modos de juego y gráficos mejorados para esta temporada.",players:"1-4 jugadores",plat:"PC / PS5 / Xbox"},
+  {name:"Resident Evil 4",genre:"Terror",price:"$39.99",stars:"★★★★★ 4.7",bg:"#1a1200",emoji:"🧟",badge:"sale",desc:"El remake del clásico survival horror que redefinió el género. Terror, acción y drama en Europa.",players:"1 jugador",plat:"PC / PS5 / Xbox"},
+  {name:"Hades II",genre:"Acción",price:"$29.99",stars:"★★★★★ 4.8",bg:"#12001a",emoji:"🔱",badge:"new",desc:"El sucesor del roguelite más aclamado. Desciende al inframundo como Melinoë en una batalla épica.",players:"1 jugador",plat:"PC"},
+  {name:"Zelda: TotK",genre:"Aventura",price:"$59.99",stars:"★★★★★ 5.0",bg:"#0a1a0a",emoji:"🗡️",badge:"",desc:"Link explora Hyrule en un mundo abierto repleto de mazmorras, puzzles y secretos por descubrir.",players:"1 jugador",plat:"Switch"},
+  {name:"Stardew Valley",genre:"Indie",price:"$14.99",stars:"★★★★★ 4.9",bg:"#1a1508",emoji:"🌾",badge:"sale",desc:"Hereda una granja y construye tu propia vida en un encantador pueblo lleno de personajes memorables.",players:"1-4 jugadores",plat:"PC / Switch / PS4"},
+  {name:"Cyberpunk 2077",genre:"RPG",price:"$49.99",stars:"★★★★☆ 4.4",bg:"#000d1a",emoji:"🤖",badge:"",desc:"Explora Night City, la metrópolis más peligrosa del futuro en este RPG de mundo abierto.",players:"1 jugador",plat:"PC / PS5 / Xbox"},
+  {name:"Dead Space",genre:"Terror",price:"$34.99",stars:"★★★★☆ 4.5",bg:"#0d0005",emoji:"👾",badge:"sale",desc:"Sobrevive a bordo de la USG Ishimura en este remake del terror espacial que te quitará el sueño.",players:"1 jugador",plat:"PC / PS5 / Xbox"},
+  {name:"Ori and the Will",genre:"Aventura",price:"$24.99",stars:"★★★★★ 4.8",bg:"#001a1a",emoji:"✨",badge:"",desc:"Una aventura visual impresionante con plataformas precisas y una banda sonora épica orquestal.",players:"1 jugador",plat:"PC / Xbox"},
+  {name:"Rocket League",genre:"Deportes",price:"Gratis",stars:"★★★★☆ 4.3",bg:"#1a0a00",emoji:"🚗",badge:"",desc:"Fútbol con autos cohete. Fácil de aprender, imposible de dominar. Uno de los e-sports más populares.",players:"1-4 jugadores",plat:"PC / PS5 / Xbox / Switch"},
+];
+
+let active="all";
+
+function render(){
+  const filtered=active==="all"?games:games.filter(g=>g.genre===active);
+  const grid=document.getElementById("grid");
+  if(!filtered.length){grid.innerHTML='<div class="empty">No hay juegos en esta categoría 🎮</div>';return}
+  grid.innerHTML=filtered.map((g,i)=>`
+    <div class="card" style="animation-delay:${i*0.05}s" onclick="openModal(${games.indexOf(g)})">
+      <div class="thumb" style="background:${g.bg}">
+        ${g.emoji}
+        ${g.badge==='new'?'<span class="new-badge">Nuevo</span>':''}
+        ${g.badge==='sale'?'<span class="sale-badge">Oferta</span>':''}
+      </div>
+      <div class="info">
+        <div class="game-name">${g.name}</div>
+        <div class="game-genre">${g.genre}</div>
+        <div class="card-row">
+          <span class="game-price">${g.price}</span>
+          <span class="game-stars">${g.stars.split(' ')[0]}</span>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function filter(el,cat){
+  document.querySelectorAll(".pill").forEach(p=>p.classList.remove("active"));
+  el.classList.add("active");
+  active=cat;render();
+}
+
+function openModal(i){
+  const g=games[i];
+  document.getElementById("m-thumb").style.background=g.bg;
+  document.getElementById("m-thumb").textContent=g.emoji;
+  document.getElementById("m-genre").textContent=g.genre;
+  document.getElementById("m-name").textContent=g.name;
+  document.getElementById("m-desc").textContent=g.desc;
+  document.getElementById("m-price").textContent=g.price;
+  document.getElementById("m-stars").textContent=g.stars;
+  document.getElementById("m-players").textContent=g.players;
+  document.getElementById("m-plat").textContent=g.plat;
+  document.getElementById("modal").classList.add("open");
+}
+
+function closeModal(e){
+  if(e.target.id==="modal") document.getElementById("modal").classList.remove("open");
+}
+
+render();
+</script>
+</body>
+</html>
